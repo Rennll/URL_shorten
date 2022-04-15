@@ -14,6 +14,7 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 
 app.use(express.urlencoded({ extended: true }))
+app.use(express.static('public'))
 
 // setting database by mongoose
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
@@ -29,7 +30,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/', (req, res) => {
-  const url = req.body.url
+  const url = req.body.url.trim()
 
   Record.find({ url })
     .lean()

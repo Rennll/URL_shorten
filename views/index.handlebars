@@ -1,6 +1,9 @@
-<form action="/" method="POST">
+<form action="/" method="POST" class="needs-validation" novalidate>
   <div class="mb-3">
-    <input type="url" class="form-control" id="url" name="url" placeholder="Input URL Here.">
+    <input type="url" class="form-control" id="url" name="url" placeholder="Input URL Here" pattern="http://*.*" required>
+    <div class="invalid-feedback">
+      Please input a valid URL here
+    </div>
   </div>
   <div class="text-center">
     <button type="submit" class="btn btn-outline-primary">Shorten</button>
