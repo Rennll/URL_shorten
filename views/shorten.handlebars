@@ -1,5 +1,7 @@
 <h4>Success! Please use this link:</h4>
-<a href="{{ short }}" style="font-size: calc(1.275rem + .3vw);">{{ short }}</a>
+<a href="{{ short }}" style="font-size: calc(1.275rem + .3vw);" id="short-url">{{ short }}</a>
 <div class="text-center mt-3">
-  <button type="submit" class="btn btn-primary">Copy</button>
+  <button class="btn btn-primary btn-copy">Copy</button>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
