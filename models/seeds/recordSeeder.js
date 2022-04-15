@@ -1,14 +1,11 @@
-const mongoose = require('mongoose')
+const db = require('../../config/mongoose')
 const Record = require('../record')
+const randomChars = require('../../controllers/randomChars')
 
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
-const db = mongoose.connection
-db.on('error', err => console.error(err))
 db.once('open', () => {
-  console.log('MongoDB connected!')
-
-  Record.create([{ URL: 'http://google.com', short_chars: 'googl' }, {
-    URL: 'http://facebook.com', short_chars: 'facbk'
+  Record.create([{ url: 'http://google.com', shortChars: randomChars(5) }, {
+    url: 'http://facebook.com', shortChars: randomChars(5)
   }])
-  console.log('Done!')
+    .then(() => console.log('Done!'))
+    .then(() => db.close())
 })

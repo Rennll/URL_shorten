@@ -1,9 +1,10 @@
 const express = require('express')
-const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
 
 const Record = require('./models/record')
 const randomChars = require('./controllers/randomChars')
+require('./config/mongoose')
+
 const app = express()
 const PORT = 3000
 const SHORTEN_CHARS_LEN = 5
@@ -15,14 +16,6 @@ app.set('view engine', 'handlebars')
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
-
-// setting database by mongoose
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
-const db = mongoose.connection
-db.on('error', err => console.error(err))
-db.once('open', () => {
-  console.log('MongoDB connected!')
-})
 
 // setting routes
 app.get('/', (req, res) => {
