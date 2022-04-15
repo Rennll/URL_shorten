@@ -55,6 +55,19 @@ app.post('/', (req, res) => {
     .catch(err => console.error(err))
 })
 
+app.get('/:shortChars', (req, res) => {
+  const shortChars = req.params.shortChars
+
+  Record.find({ shortChars })
+    .then(record => {
+      if (record.length) {
+        res.redirect(record[0].url)
+      } else {
+        res.redirect('/')
+      }
+    })
+})
+
 // start and listen
 app.listen(PORT, () => {
   console.log(`The website is running on http://localhost:${PORT}`)
