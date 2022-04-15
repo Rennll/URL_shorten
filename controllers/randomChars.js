@@ -1,9 +1,10 @@
 const lowerCaseLetters = 'abcdefghijklmnopqrstuvwxyz'
 const upperCaseLetters = lowerCaseLetters.toLocaleUpperCase()
+const numbers = '1234567890'
 
 function generateRandom (num) {
   // setting collections
-  const collections = (lowerCaseLetters + upperCaseLetters).split('')
+  const collections = (lowerCaseLetters + upperCaseLetters + numbers).split('')
 
   // randomly take letter form collections by num times
   let letters = ''
