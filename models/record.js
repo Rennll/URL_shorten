@@ -2,13 +2,11 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const record = new Schema({
-  URL: {
-    type: String,
-    unique: true
+  url: {
+    type: String
   },
-  short_chars: {
-    type: String,
-    unique: true
+  shortChars: {
+    type: String
   }
 })
 
