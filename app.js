@@ -23,6 +23,13 @@ app.get('/', (req, res) => {
   res.render('index')
 })
 
+app.get('/sh', (req, res) => {
+  const record = {
+    URL: 'http://google.com'
+  }
+  res.render('shorten', { record })
+})
+
 // start and listen
 app.listen(PORT, () => {
   console.log(`The website is running on http://localhost:${PORT}`)
