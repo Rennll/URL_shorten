@@ -6,6 +6,18 @@ const randomChars = require('../../controllers/randomChars')
 
 const SHORTEN_CHARS_LEN = 5
 
+async function seriesLoop () {
+  let needsLooping = true
+  while (needsLooping) {
+    const shortChars = randomChars(SHORTEN_CHARS_LEN)
+    const isExists = await Record.exists({ shortChars })
+    if (!isExists) {
+      needsLooping = false
+      return shortChars
+    }
+  }
+}
+
 // setting index
 router.get('/', (req, res) => {
   res.render('index')
@@ -21,31 +33,22 @@ router.post('/', (req, res) => {
   //        如果新的網址不存在
   //        -> 則創造一個新的 record
   //          -> 儲存在之後再執行渲染，並脫離迴圈
-  Record.find({ url })
+  Record.findOne({ url })
     .lean()
     .then(record => {
-      if (record.length) {
-        const shortChars = record[0].shortChars
-        res.render('shorten', { short: process.env.BASE_URL + shortChars })
-      } else {
-        let isUnique = false
-        do {
-          const shortChars = randomChars(SHORTEN_CHARS_LEN)
-          Record.find({ shortChars })
-            .then(record => {
-              if (!record.length) {
-                Record.create({ url, shortChars })
-                  .then(() => {
-                    isUnique = true
-                    res.render('shorten', { short: process.env.BASE_URL + shortChars })
-                  })
-                  .catch(err => console.error(err))
-              }
-            })
-        } while (isUnique === true)
-      }
+      const shortChars = record.shortChars
+      res.render('shorten', { short: process.env.BASE_URL + shortChars })
     })
-    .catch(err => console.error(err))
+    .catch(() => {
+      seriesLoop()
+        .then(shortChars => {
+          Record.create({ url, shortChars })
+            .then(() => {
+              res.render('shorten', { short: process.env.BASE_URL + shortChars })
+            })
+            .catch(err => console.error(err))
+        })
+    })
 })
 
 // setting shorten url as params
