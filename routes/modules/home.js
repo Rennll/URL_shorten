@@ -6,18 +6,6 @@ const randomChars = require('../../controllers/randomChars')
 
 const SHORTEN_CHARS_LEN = 5
 
-async function seriesLoop () {
-  let needsLooping = true
-  while (needsLooping) {
-    const shortChars = randomChars(SHORTEN_CHARS_LEN)
-    const isExists = await Record.exists({ shortChars })
-    if (!isExists) {
-      needsLooping = false
-      return shortChars
-    }
-  }
-}
-
 // setting index
 router.get('/', (req, res) => {
   res.render('index')
@@ -39,15 +27,20 @@ router.post('/', (req, res) => {
       const shortChars = record.shortChars
       res.render('shorten', { short: process.env.BASE_URL + shortChars })
     })
-    .catch(() => {
-      seriesLoop()
-        .then(shortChars => {
-          Record.create({ url, shortChars })
-            .then(() => {
-              res.render('shorten', { short: process.env.BASE_URL + shortChars })
-            })
-            .catch(err => console.error(err))
-        })
+    .catch(async () => {
+      try {
+        let needsLooping = true
+        let shortChars = ''
+        while (needsLooping) {
+          shortChars = randomChars(SHORTEN_CHARS_LEN)
+          const isExists = await Record.exists({ shortChars })
+          if (!isExists) needsLooping = false
+        }
+        const record = await Record.create({ url, shortChars })
+        res.render('shorten', { short: process.env.BASE_URL + record.shortChars })
+      } catch (err) {
+        console.error(err)
+      }
     })
 })
 
