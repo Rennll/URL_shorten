@@ -50,14 +50,9 @@ router.get('/:shortChars', (req, res) => {
 
   // 尋找使用者提供的短網址
   // 若有則渲染，沒有就重新回到根目錄
-  Record.find({ shortChars })
-    .then(record => {
-      if (record.length) {
-        res.redirect(record[0].url)
-      } else {
-        res.redirect('/')
-      }
-    })
+  Record.findOne({ shortChars })
+    .then(record => res.redirect(record.url))
+    .catch(() => res.redirect('/'))
 })
 
 module.exports = router
