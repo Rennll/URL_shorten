@@ -5,3 +5,11 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
+<script>
+  const clipboard = new ClipboardJS('.btn-copy', {
+    target (trigger) {
+      // trigger 參數為觸發元素 Node
+      return document.querySelector('#short-url')
+    }
+  })
+</script>

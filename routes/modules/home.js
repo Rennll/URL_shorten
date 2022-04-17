@@ -5,7 +5,6 @@ const Record = require('../../models/record')
 const randomChars = require('../../controllers/randomChars')
 
 const SHORTEN_CHARS_LEN = 5
-const BASE_URL = 'http://localhost:3000/'
 
 // setting index
 router.get('/', (req, res) => {
@@ -27,7 +26,7 @@ router.post('/', (req, res) => {
     .then(record => {
       if (record.length) {
         const shortChars = record[0].shortChars
-        res.render('shorten', { short: BASE_URL + shortChars })
+        res.render('shorten', { short: process.env.BASE_URL + shortChars })
       } else {
         let isUnique = false
         do {
@@ -38,7 +37,7 @@ router.post('/', (req, res) => {
                 Record.create({ url, shortChars })
                   .then(() => {
                     isUnique = true
-                    res.render('shorten', { short: BASE_URL + shortChars })
+                    res.render('shorten', { short: process.env.BASE_URL + shortChars })
                   })
                   .catch(err => console.error(err))
               }

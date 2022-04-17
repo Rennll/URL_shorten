@@ -37,9 +37,10 @@ cd restaurant_list
 npm install
 ```
 
-4. 請設定環境變數 MONGODB_URI ，如果在 Bash(windows) 指令為下
+4. 請設定環境變數 MONGODB_URI 與 BASE_URL ，也就是資料庫的連線和提供轉址的網域名稱，如果在 Bash(windows) 指令為下
 ```
 export MONGODB_URI="mongodb+srv://<username>:<password>@cluster0.ps0rf.mongodb.net/URL-shorten?retryWrites=true&w=majority"
+export export BASE_URL=<sever domain>"
 ```
 
 5. 等待下載完成後，執行 app.js
